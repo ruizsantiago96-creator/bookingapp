@@ -10,7 +10,7 @@ A Flutter hotel booking app built as a learning project. It follows the early UI
 - Navigation from Home to both new screens.
 - Booking and sign-up actions are disabled until their services exist.
 
-The tutorial reaches Firebase setup around 1:43:40 and package installation around 1:48:18. That is approximately 30% of its running time. These UI shells prepare for that stage, but **Firebase is not configured yet**. No account is created and no booking is stored.
+The tutorial reaches Firebase setup around 1:43:40 and package installation around 1:48:18. That is approximately 30% of its running time. This app now initializes the `bookingapp-ff02b` Firebase project on Android, web, and Windows. Authentication screens are still placeholders: no account is created and no booking is stored.
 
 ## Run
 
@@ -25,9 +25,9 @@ The local image is stored in `images/` and declared in `pubspec.yaml`.
 
 ## Next implementation stage
 
-1. Create your own Firebase project and register the Android and iOS apps.
-2. Configure FlutterFire for this project and add the generated options file locally.
-3. Add Firebase packages, initialize Firebase, and implement authentication.
-4. Connect hotel data and bookings to the backend.
+1. Enable Email/Password in Firebase Authentication if it is not already enabled.
+2. Connect the sign-up screen and add a login screen using `firebase_auth`.
+3. Connect hotel data and bookings to the backend.
+4. Run `flutterfire configure` again when adding iOS, macOS, or another Firebase service.
 
-Do not commit API secrets or private service credentials.
+The generated Firebase app configuration contains public identifiers. Do not commit service-account keys or private credentials.
