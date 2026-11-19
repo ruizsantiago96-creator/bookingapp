@@ -2,15 +2,17 @@
 
 A Flutter hotel booking app built as a learning project. It follows the early UI stages of [Shivam Gupta's tutorial](https://www.youtube.com/watch?v=04k2G18ozPw). This repository contains independently written code.
 
-## Current milestone: UI shells
+## Current milestone: authentication and home
 
 - Home screen with a local image and a featured stay card.
 - Hotel details screen with placeholder information and amenities.
-- Sign-up screen with name, email, and password fields.
-- Navigation from Home to both new screens.
-- Booking and sign-up actions are disabled until their services exist.
+- Sign-up and sign-in with email and password through Firebase Authentication.
+- Password reset email, form validation, and account error messages.
+- Home responds to the current user and offers sign-out.
+- Navigation from Home to hotel details and authentication.
+- Booking remains disabled until its service exists.
 
-The tutorial reaches Firebase setup around 1:43:40 and package installation around 1:48:18. That is approximately 30% of its running time. This app now initializes the `bookingapp-ff02b` Firebase project on Android, web, and Windows. Authentication screens are still placeholders: no account is created and no booking is stored.
+This app initializes the `bookingapp-ff02b` Firebase project on Android, web, and Windows. Account creation and login use Firebase Authentication. No booking is stored yet.
 
 ## Run
 
@@ -23,11 +25,12 @@ flutter run
 
 The local image is stored in `images/` and declared in `pubspec.yaml`.
 
+In the [Firebase console](https://console.firebase.google.com/project/bookingapp-ff02b/authentication/providers), enable **Authentication → Sign-in method → Email/Password** before trying the forms. The **Users** page alone does not enable this provider.
+
 ## Next implementation stage
 
-1. Enable Email/Password in Firebase Authentication if it is not already enabled.
-2. Connect the sign-up screen and add a login screen using `firebase_auth`.
-3. Connect hotel data and bookings to the backend.
-4. Run `flutterfire configure` again when adding iOS, macOS, or another Firebase service.
+1. Connect hotel data and bookings to the backend.
+2. Add email verification and any additional sign-in providers you need.
+3. Run `flutterfire configure` again when adding iOS, macOS, or another Firebase service.
 
 The generated Firebase app configuration contains public identifiers. Do not commit service-account keys or private credentials.
