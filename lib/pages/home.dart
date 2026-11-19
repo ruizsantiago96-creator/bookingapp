@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'hotel_detail.dart';
+import 'sign_up.dart';
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -55,6 +58,24 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
+            ),
+            const SizedBox(height: 16),
+            FilledButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(builder: (_) => const HotelDetail()),
+                );
+              },
+              child: const Text('View hotel details'),
+            ),
+            const SizedBox(height: 12),
+            OutlinedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(builder: (_) => const SignUp()),
+                );
+              },
+              child: const Text('Create an account'),
             ),
           ],
         ),
