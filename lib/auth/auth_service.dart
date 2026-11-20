@@ -99,23 +99,23 @@ class FirebaseAuthService implements AuthService {
   String _messageFor(FirebaseAuthException error) {
     switch (error.code) {
       case 'email-already-in-use':
-        return 'An account already exists for this email.';
+        return 'Ya existe una cuenta con este correo electrónico.';
       case 'weak-password':
-        return 'Choose a stronger password.';
+        return 'Elige una contraseña más segura.';
       case 'invalid-email':
-        return 'Enter a valid email address.';
+        return 'Escribe un correo electrónico válido.';
       case 'invalid-credential':
       case 'user-not-found':
       case 'wrong-password':
-        return 'Incorrect email or password.';
+        return 'Correo electrónico o contraseña incorrectos.';
       case 'too-many-requests':
-        return 'Too many attempts. Please try again later.';
+        return 'Demasiados intentos. Inténtalo de nuevo más tarde.';
       case 'operation-not-allowed':
-        return 'Email sign-in is not enabled in Firebase.';
+        return 'El acceso con correo electrónico no está habilitado en Firebase.';
       case 'network-request-failed':
-        return 'Check your internet connection and try again.';
+        return 'Comprueba tu conexión a internet e inténtalo de nuevo.';
       default:
-        return 'Authentication failed. Please try again.';
+        return 'No se pudo completar la autenticación. Inténtalo de nuevo.';
     }
   }
 }

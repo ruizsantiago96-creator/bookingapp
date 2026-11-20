@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../auth/auth_service.dart';
 import 'hotel_detail.dart';
-import 'sign_in.dart';
-import 'sign_up.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key, this.authService});
@@ -39,13 +37,19 @@ class _HomeState extends State<Home> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Unable to sign out. Please try again.'),
+            content: Text('No se pudo cerrar sesión. Inténtalo de nuevo.'),
           ),
         );
       }
     } finally {
       if (mounted) setState(() => _signingOut = false);
     }
+  }
+
+  void _openHotelDetail() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(builder: (_) => const HotelDetail()),
+    );
   }
 
   Widget _accountCard(BuildContext context) {
@@ -64,7 +68,7 @@ class _HomeState extends State<Home> {
           return const Card(
             child: Padding(
               padding: EdgeInsets.all(20),
-              child: Text('Unable to load your account.'),
+              child: Text('No se pudo cargar tu cuenta.'),
             ),
           );
         }
@@ -77,41 +81,18 @@ class _HomeState extends State<Home> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  user == null
-                      ? 'Your account'
-                      : 'Welcome, ${user.displayName?.isNotEmpty == true ? user.displayName : user.email ?? 'traveler'}',
+                  'Te damos la bienvenida, ${user?.displayName?.isNotEmpty == true ? user!.displayName : user?.email ?? 'viajero'}',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  user == null
-                      ? 'Sign in or create an account to save your stays.'
-                      : 'You are signed in to Booking App.',
-                ),
+                const Text('Has iniciado sesión en Booking App.'),
                 const SizedBox(height: 12),
-                if (user == null) ...[
-                  FilledButton(
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (_) => SignIn(authService: _auth),
-                      ),
-                    ),
-                    child: const Text('Sign in'),
+                OutlinedButton(
+                  onPressed: _signingOut ? null : _signOut,
+                  child: Text(
+                    _signingOut ? 'Cerrando sesión...' : 'Cerrar sesión',
                   ),
-                  const SizedBox(height: 8),
-                  OutlinedButton(
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (_) => SignUp(authService: _auth),
-                      ),
-                    ),
-                    child: const Text('Create an account'),
-                  ),
-                ] else
-                  OutlinedButton(
-                    onPressed: _signingOut ? null : _signOut,
-                    child: Text(_signingOut ? 'Signing out...' : 'Sign out'),
-                  ),
+                ),
               ],
             ),
           ),
@@ -129,12 +110,12 @@ class _HomeState extends State<Home> {
           children: [
             const SizedBox(height: 12),
             Text(
-              'Find your stay',
+              'Encuentra tu estancia',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 8),
             Text(
-              'Discover a comfortable place for your next trip.',
+              'Descubre un lugar cómodo para tu próximo viaje.',
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             const SizedBox(height: 20),
@@ -151,44 +132,44 @@ class _HomeState extends State<Home> {
             ),
             const SizedBox(height: 24),
             Text(
-              'Featured stay',
+              'Estancia destacada',
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 12),
             Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'A place to call home',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Hotel details and live availability are coming soon.',
-                    ),
-                    const SizedBox(height: 12),
-                    const Row(
-                      children: [
-                        Icon(Icons.location_on_outlined, size: 18),
-                        SizedBox(width: 4),
-                        Text('Explore destinations'),
-                      ],
-                    ),
-                  ],
+              child: InkWell(
+                onTap: _openHotelDetail,
+                borderRadius: BorderRadius.circular(12),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Un lugar para sentirte en casa',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Próximamente habrá detalles del hotel y disponibilidad en tiempo real.',
+                      ),
+                      const SizedBox(height: 12),
+                      const Row(
+                        children: [
+                          Icon(Icons.location_on_outlined, size: 18),
+                          SizedBox(width: 4),
+                          Text('Explora destinos'),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: 16),
             FilledButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(builder: (_) => const HotelDetail()),
-                );
-              },
-              child: const Text('View hotel details'),
+              onPressed: _openHotelDetail,
+              child: const Text('Ver detalles del hotel'),
             ),
           ],
         ),

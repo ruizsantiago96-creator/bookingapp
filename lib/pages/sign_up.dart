@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../auth/auth_service.dart';
 import '../auth/form_validators.dart';
-import 'sign_in.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({super.key, this.authService});
+  const SignUp({super.key, this.authService, required this.onShowSignIn});
 
   final AuthService? authService;
+  final VoidCallback onShowSignIn;
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -50,11 +50,10 @@ class _SignUpState extends State<SignUp> {
         email: _email.text.trim(),
         password: _password.text,
       );
-      if (mounted) Navigator.of(context).pop();
     } on AuthFailure catch (error) {
       if (mounted) setState(() => _error = error.message);
     } catch (_) {
-      if (mounted) setState(() => _error = 'Unable to create your account.');
+      if (mounted) setState(() => _error = 'No se pudo crear tu cuenta.');
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -63,7 +62,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Create an account')),
+      appBar: AppBar(title: const Text('Crear una cuenta')),
       body: SafeArea(
         child: Form(
           key: _formKey,
@@ -78,13 +77,13 @@ class _SignUpState extends State<SignUp> {
               ),
               const SizedBox(height: 16),
               Text(
-                'Join Booking App',
+                'Únete a Booking App',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               const SizedBox(height: 8),
               const Text(
-                'Create an account to start exploring stays.',
+                'Crea una cuenta para comenzar a explorar estancias.',
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 28),
@@ -95,11 +94,11 @@ class _SignUpState extends State<SignUp> {
                 textCapitalization: TextCapitalization.words,
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
-                  labelText: 'Name',
+                  labelText: 'Nombre',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) => value == null || value.trim().isEmpty
-                    ? 'Enter your name.'
+                    ? 'Escribe tu nombre.'
                     : null,
               ),
               const SizedBox(height: 16),
@@ -110,7 +109,7 @@ class _SignUpState extends State<SignUp> {
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
-                  labelText: 'Email',
+                  labelText: 'Correo electrónico',
                   border: OutlineInputBorder(),
                 ),
                 validator: validateEmail,
@@ -123,7 +122,7 @@ class _SignUpState extends State<SignUp> {
                 obscureText: true,
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
-                  labelText: 'Password',
+                  labelText: 'Contraseña',
                   border: OutlineInputBorder(),
                 ),
                 validator: validatePassword,
@@ -135,11 +134,12 @@ class _SignUpState extends State<SignUp> {
                 obscureText: true,
                 textInputAction: TextInputAction.done,
                 decoration: const InputDecoration(
-                  labelText: 'Confirm password',
+                  labelText: 'Confirmar contraseña',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) =>
-                    value != _password.text ? 'Passwords do not match.' : null,
+                validator: (value) => value != _password.text
+                    ? 'Las contraseñas no coinciden.'
+                    : null,
                 onFieldSubmitted: (_) => _submit(),
               ),
               if (_error != null) ...[
@@ -158,18 +158,12 @@ class _SignUpState extends State<SignUp> {
                         height: 20,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : const Text('Create account'),
+                    : const Text('Crear cuenta'),
               ),
               const SizedBox(height: 12),
               TextButton(
-                onPressed: _busy
-                    ? null
-                    : () => Navigator.of(context).pushReplacement(
-                        MaterialPageRoute<void>(
-                          builder: (_) => SignIn(authService: _auth),
-                        ),
-                      ),
-                child: const Text('Already have an account? Sign in'),
+                onPressed: _busy ? null : widget.onShowSignIn,
+                child: const Text('¿Ya tienes cuenta? Inicia sesión'),
               ),
             ],
           ),

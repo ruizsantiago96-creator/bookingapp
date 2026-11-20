@@ -6,7 +6,7 @@ class HotelDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Hotel details')),
+      appBar: AppBar(title: const Text('Detalles del hotel')),
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
@@ -20,25 +20,25 @@ class HotelDetail extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          Text('A place to call home', style: Theme.of(context).textTheme.headlineSmall),
+          Text('Un lugar para sentirte en casa', style: Theme.of(context).textTheme.headlineSmall),
           const SizedBox(height: 8),
-          const Text('Hotel information and live availability are coming soon.'),
+          const Text('Próximamente habrá información del hotel y disponibilidad en tiempo real.'),
           const SizedBox(height: 24),
-          Text('Amenities', style: Theme.of(context).textTheme.titleLarge),
+          Text('Servicios', style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 12),
           const Wrap(
             spacing: 8,
             runSpacing: 8,
             children: [
               Chip(avatar: Icon(Icons.wifi), label: Text('Wi-Fi')),
-              Chip(avatar: Icon(Icons.local_parking_outlined), label: Text('Parking')),
-              Chip(avatar: Icon(Icons.restaurant_outlined), label: Text('Dining')),
+              Chip(avatar: Icon(Icons.local_parking_outlined), label: Text('Estacionamiento')),
+              Chip(avatar: Icon(Icons.restaurant_outlined), label: Text('Restaurante')),
             ],
           ),
           const SizedBox(height: 24),
           const FilledButton(
             onPressed: null,
-            child: Text('Booking available soon'),
+            child: Text('Reservas disponibles próximamente'),
           ),
         ],
       ),

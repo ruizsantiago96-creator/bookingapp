@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../auth/auth_service.dart';
 import '../auth/form_validators.dart';
-import 'sign_up.dart';
 
 class SignIn extends StatefulWidget {
-  const SignIn({super.key, this.authService});
+  const SignIn({super.key, this.authService, required this.onShowSignUp});
 
   final AuthService? authService;
+  final VoidCallback onShowSignUp;
 
   @override
   State<SignIn> createState() => _SignInState();
@@ -42,11 +42,10 @@ class _SignInState extends State<SignIn> {
     });
     try {
       await _auth.signIn(email: _email.text.trim(), password: _password.text);
-      if (mounted) Navigator.of(context).pop();
     } on AuthFailure catch (error) {
       if (mounted) setState(() => _error = error.message);
     } catch (_) {
-      if (mounted) setState(() => _error = 'Unable to sign in.');
+      if (mounted) setState(() => _error = 'No se pudo iniciar sesión.');
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -68,7 +67,7 @@ class _SignInState extends State<SignIn> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
-              'If this email has an account, a reset link was sent.',
+              'Si existe una cuenta con este correo, se envió un enlace para restablecer la contraseña.',
             ),
           ),
         );
@@ -76,7 +75,9 @@ class _SignInState extends State<SignIn> {
     } on AuthFailure catch (error) {
       if (mounted) setState(() => _error = error.message);
     } catch (_) {
-      if (mounted) setState(() => _error = 'Unable to send a reset email.');
+      if (mounted) {
+        setState(() => _error = 'No se pudo enviar el correo de recuperación.');
+      }
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -85,7 +86,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign in')),
+      appBar: AppBar(title: const Text('Iniciar sesión')),
       body: SafeArea(
         child: Form(
           key: _formKey,
@@ -100,13 +101,13 @@ class _SignInState extends State<SignIn> {
               ),
               const SizedBox(height: 16),
               Text(
-                'Welcome back',
+                'Qué gusto verte de nuevo',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               const SizedBox(height: 8),
               const Text(
-                'Sign in to continue exploring stays.',
+                'Inicia sesión para seguir explorando estancias.',
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),
@@ -117,7 +118,7 @@ class _SignInState extends State<SignIn> {
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
-                  labelText: 'Email',
+                  labelText: 'Correo electrónico',
                   border: OutlineInputBorder(),
                 ),
                 validator: validateEmail,
@@ -130,7 +131,7 @@ class _SignInState extends State<SignIn> {
                 obscureText: true,
                 textInputAction: TextInputAction.done,
                 decoration: const InputDecoration(
-                  labelText: 'Password',
+                  labelText: 'Contraseña',
                   border: OutlineInputBorder(),
                 ),
                 validator: validatePassword,
@@ -140,7 +141,7 @@ class _SignInState extends State<SignIn> {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: _busy ? null : _resetPassword,
-                  child: const Text('Forgot password?'),
+                  child: const Text('¿Olvidaste tu contraseña?'),
                 ),
               ),
               if (_error != null) ...[
@@ -159,18 +160,12 @@ class _SignInState extends State<SignIn> {
                         height: 20,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : const Text('Sign in'),
+                    : const Text('Iniciar sesión'),
               ),
               const SizedBox(height: 12),
               TextButton(
-                onPressed: _busy
-                    ? null
-                    : () => Navigator.of(context).pushReplacement(
-                        MaterialPageRoute<void>(
-                          builder: (_) => SignUp(authService: _auth),
-                        ),
-                      ),
-                child: const Text('New here? Create an account'),
+                onPressed: _busy ? null : widget.onShowSignUp,
+                child: const Text('¿No tienes cuenta? Regístrate'),
               ),
             ],
           ),

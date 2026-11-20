@@ -8,8 +8,9 @@ A Flutter hotel booking app built as a learning project. It follows the early UI
 - Hotel details screen with placeholder information and amenities.
 - Sign-up and sign-in with email and password through Firebase Authentication.
 - Password reset email, form validation, and account error messages.
+- The app opens at sign-in (or registration) when there is no active session.
+- A valid Firebase session unlocks Home and hotel details; sign-out returns to sign-in.
 - Home responds to the current user and offers sign-out.
-- Navigation from Home to hotel details and authentication.
 - Booking remains disabled until its service exists.
 
 This app initializes the `bookingapp-ff02b` Firebase project on Android, web, and Windows. Account creation and login use Firebase Authentication. No booking is stored yet.
